@@ -14,6 +14,7 @@ import MainScreen from './screens/MainScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import { AuthContext, AuthContextProvider } from '@/context/AuthContext';
 import { PaperProvider } from 'react-native-paper';
+import { DayContextProvider } from '@/context/DayContext';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -63,9 +64,11 @@ function Navigation() {
 export default function RootLayout() {
   return (
     <AuthContextProvider>
+      <DayContextProvider>
       <PaperProvider>
         <RootComponent />
       </PaperProvider>
+      </DayContextProvider>
     </AuthContextProvider>
   );
 }

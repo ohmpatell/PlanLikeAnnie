@@ -6,6 +6,10 @@ const DayContext = createContext();
 
 export const DayContextProvider = ({ children }) => {
   const [days, setDays] = useState([]);
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [view, setView] = useState('week'); 
+  const [isNotes, setIsNotes] = useState(false);
+  const todaysDate = new Date();
 
   const addDay = (date, tasks = []) => {
     const newDay = new Day(date, tasks);
@@ -22,8 +26,26 @@ export const DayContextProvider = ({ children }) => {
     );
   };
 
+  const getWeekRange = (date) => {
+    const startOfWeek = new Date(date);
+    startOfWeek.setDate(date.getDate() - date.getDay() + 1);
+    const week = [];
+    for (let i = 0; i < 7; i++) {
+      const day = new Date(startOfWeek);
+      day.setDate(startOfWeek.getDate() + i);
+      week.push(day);
+    }
+    return week;
+  };
+
+  const getDayTasks = (date) => {
+    const day = days.find(d => d.date.toDateString() === date.toDateString());
+    return day ? day.tasks : [];
+  };
+
   return (
-    <DayContext.Provider value={{ days, addDay, updateDay }}>
+    <DayContext.Provider value={{ days, addDay, updateDay, currentDate, setCurrentDate, view, setView, getWeekRange, 
+                    getDayTasks, isNotes, setIsNotes, todaysDate }}>
       {children}
     </DayContext.Provider>
   );

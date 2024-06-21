@@ -1,14 +1,21 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import TaskList from '@/components/Tasks/TaskList';
-import AppBar from '@/components/Appbar';
+// @/components/Main/MainScreen.tsx
+import React, { useContext } from 'react';
+import { View, StyleSheet } from 'react-native';
+import AppBar from '@/components/Main/Appbar';
+import { AuthContext } from '@/context/AuthContext';
+import { useDayContext } from '@/context/DayContext';
 import WeekView from '@/components/Main/WeekView';
+import DayView from '@/components/Main/DayView';
+import DayNavigation from '@/components/Main/DayNavigation';
 
-const MainScreen: React.FC = () => { 
+const MainScreen: React.FC = () => {
+  const { view } = useDayContext();
+
   return (
     <View style={styles.container}>
       <AppBar/>
-      <WeekView />
+      <DayNavigation />
+      {view === 'week' ? <WeekView /> : <DayView />}
     </View>
   );
 };
@@ -16,10 +23,7 @@ const MainScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
   },
-  
-
 });
 
 export default MainScreen;

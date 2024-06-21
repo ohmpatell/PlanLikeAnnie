@@ -2,8 +2,12 @@ import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import TaskComponent from './TaskComponent';
 import Task from '@/models/Task';
+import { useDayContext } from '@/context/DayContext';
+
 
 const taskData = new Task('user123', 'Learn Firebase', 'Complete Firebase integration', new Date());
+
+
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([taskData]);

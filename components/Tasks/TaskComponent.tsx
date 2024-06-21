@@ -4,6 +4,7 @@ import { Checkbox } from 'react-native-paper';
 import { Task } from '@/models/Task';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { useDayContext } from '@/context/DayContext';
 
 interface TaskComponentProps {
   task: Task;
@@ -13,6 +14,8 @@ interface TaskComponentProps {
 const TaskComponent: React.FC<TaskComponentProps> = ({ task, onToggleComplete }) => {
   const colorScheme = useColorScheme() || 'light';
   const [completed, setCompleted] = useState(task.completed);
+
+  const { view } = useDayContext();
 
   const handleToggleComplete = () => {
     setCompleted(!completed);
@@ -33,7 +36,7 @@ const TaskComponent: React.FC<TaskComponentProps> = ({ task, onToggleComplete })
           { color: Colors[colorScheme].text }
         ]}>
             <Text style={styles.title}>{task.name} </Text>
-            {task.description && (
+            {task.description && view == 'day' && (
                 <Text>
                     - {task.description}
                 </Text>
