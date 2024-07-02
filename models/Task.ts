@@ -37,12 +37,18 @@ export class Task {
      * @param {boolean} [completed=false] - The initial completion status of the task.
      */
     constructor(user: string, name: string, description?: string, date?: Date, completed: boolean = false) {
-      this.id = `${user}-${date?.getTime() || Date.now()}`;
+      this.id = `${user}-${date?.getDate() || "notes" + date?.getMonth() + date?.getFullYear()}`;
       this.name = name;
       this.description = description;
       this.date = date;
       this.completed = completed;
     }
+
+    hello(){
+      console.log("Hello")
+    }
+
+
   }
   
   export default Task;

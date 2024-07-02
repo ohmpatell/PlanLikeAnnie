@@ -43,6 +43,17 @@ export const DayContextProvider = ({ children }) => {
     return day ? day.tasks : [];
   };
 
+
+  const createTask = (date, task) => {
+    const day = days.find(d => d.date.toDateString() === date.toDateString());
+    if (day) {
+      const newTasks = [...day.tasks, task];
+      updateDay(date, newTasks);
+    } else {
+      addDay(date, [task]);
+    }
+  }
+
   return (
     <DayContext.Provider value={{ days, addDay, updateDay, currentDate, setCurrentDate, view, setView, getWeekRange, 
                     getDayTasks, isNotes, setIsNotes, todaysDate }}>

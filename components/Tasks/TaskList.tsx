@@ -13,8 +13,8 @@ const TaskList = () => {
   const [tasks, setTasks] = useState([taskData]);
 
   const handleToggleComplete = (id: any) => {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) =>
+    setTasks((prevTasks: any) =>
+      prevTasks.map((task: Task) =>
         task.id === id ? { ...task, completed: !task.completed } : task
       )
     );
