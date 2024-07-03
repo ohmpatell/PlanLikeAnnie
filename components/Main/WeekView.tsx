@@ -49,7 +49,7 @@ const WeekView: React.FC = () => {
       <Text style={[styles.dayTitle, week[index].toDateString() === todaysDate.toDateString() ? styles.todayTitle : null]}>
         {`${day}, ${week[index].getDate()}`}
       </Text>      
-      <TaskList />
+      <TaskList date={week[index]}/>
     </TouchableOpacity>
   );
 
@@ -59,7 +59,7 @@ const WeekView: React.FC = () => {
         {week.map((_: any, index: any) => renderDayBox(days[index], index))}
         <TouchableOpacity style={styles.dayBox} onPress={() => handleDayPress()}>
           <Text style={styles.dayTitle}>Notes</Text>
-          <TaskList />
+          <TaskList date={"notes"}/>
         </TouchableOpacity>
       </Animated.View>
     </View>

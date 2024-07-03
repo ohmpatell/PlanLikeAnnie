@@ -1,20 +1,30 @@
-import React, { useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import TaskComponent from './TaskComponent';
-import Task from '@/models/Task';
 import { useDayContext } from '@/context/DayContext';
+import { TaskViewModel } from '@/models/TaskViewModel';
+import Day from '@/models/Day';
+import { AuthContext } from '@/context/AuthContext';
 
+const TaskList = ({ date }: { date: any }) => {
+  const { currentUser } = useContext(AuthContext);
+  const [tasks, setTasks] = useState<TaskViewModel[]>([]);
 
-const taskData = new Task('user123', 'Learn Firebase', 'Complete Firebase integration', new Date());
+  useEffect(() => {
+    const fetchTasks = async () => {
+      console.log("DATE: ", date);
+      const day = new Day(new Date(date));
+      console.log("DAY: ", day);
+      const tasks = await day.fetchTasks(currentUser.uid);
+      setTasks(tasks);
+    };
 
+    fetchTasks();
+  }, [date, currentUser.uid]);
 
-
-const TaskList = () => {
-  const [tasks, setTasks] = useState([taskData]);
-
-  const handleToggleComplete = (id: any) => {
-    setTasks((prevTasks: any) =>
-      prevTasks.map((task: Task) =>
+  const handleToggleComplete = (id: string) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
         task.id === id ? { ...task, completed: !task.completed } : task
       )
     );

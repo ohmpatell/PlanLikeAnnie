@@ -36,8 +36,8 @@ const DayView: React.FC = () => {
     <View style={styles.container}>
       <Animated.View style={[styles.tasksContainer, animatedStyle]}>
         <Text style={styles.dateTitle}>{isNotes ? 'Notes' : currentDate.toDateString()}</Text>
-        <TaskList/>
-      </Animated.View>
+        <TaskList date={currentDate}/>
+        </Animated.View>
     </View>
   );
 };
