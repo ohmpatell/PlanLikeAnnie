@@ -5,9 +5,10 @@ import { Task } from '@/models/Task';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useDayContext } from '@/context/DayContext';
+import { TaskViewModel } from '@/models/TaskViewModel';
 
 interface TaskComponentProps {
-  task: Task;
+  task: TaskViewModel;
   onToggleComplete: (id: string) => void;
 }
 
@@ -19,23 +20,31 @@ const TaskComponent: React.FC<TaskComponentProps> = ({ task, onToggleComplete })
 
   const handleToggleComplete = () => {
     setCompleted(!completed);
+    Task.update(task);
     onToggleComplete(task.id);
   };
 
   return (
     <View style={styles.container}>
-      <Checkbox
-        status={completed ? 'checked' : 'unchecked'}
-        onPress={handleToggleComplete}
-        color={Colors[colorScheme].tint}
-      />
+      {view == 'day' && (
+        <Checkbox
+          status={completed ? 'checked' : 'unchecked'}
+          onPress={handleToggleComplete}
+          color={Colors[colorScheme].tint}
+        />
+      )}
+      
       <TouchableOpacity onPress={handleToggleComplete} style={styles.textContainer}>
         <Text style={[
           styles.text,
           completed && styles.completedText,
           { color: Colors[colorScheme].text }
         ]}>
-            <Text style={styles.title}>{task.name} </Text>
+            { view == 'week' && (
+                <Text>
+                    -&nbsp;
+                </Text>)}
+            <Text style={styles.title}>{task.title} </Text>
             {task.description && view == 'day' && (
                 <Text>
                     - {task.description}
