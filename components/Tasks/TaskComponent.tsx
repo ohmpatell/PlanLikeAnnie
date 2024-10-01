@@ -20,6 +20,7 @@ const TaskComponent: React.FC<TaskComponentProps> = ({ task, onToggleComplete })
 
   const handleToggleComplete = () => {
     setCompleted(!completed);
+    task.completed = !task.completed;
     Task.update(task);
     onToggleComplete(task.id);
   };

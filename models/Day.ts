@@ -64,7 +64,7 @@ class Day {
       const querySnapshot = await getDocs(q);
       const tasks: TaskViewModel[] = [];
       querySnapshot.forEach((doc) => {
-        const task = new TaskViewModel(doc.data().id, doc.data().title, doc.data().description, new Date(doc.data().date), 
+        const task = new TaskViewModel(doc.data().id, doc.data().dbid, doc.data().title, doc.data().description, new Date(doc.data().date), 
                               doc.data().completed);
 
         if(task instanceof TaskViewModel){

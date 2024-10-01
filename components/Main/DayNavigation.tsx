@@ -25,7 +25,7 @@ const DayNavigation: React.FC = () => {
   const weekRange = getWeekRange(currentDate);
 
   const weekString = weekRange && weekRange.length === 7
-    ? `${weekRange[0].toLocaleDateString()} - ${weekRange[6].toLocaleDateString()}`
+    ? `${weekRange[0].toLocaleDateString(undefined, { day: '2-digit', month: '2-digit' })} - ${weekRange[6].toLocaleDateString(undefined, { day: '2-digit', month: '2-digit' })}`
     : '';
 
   return (
@@ -35,8 +35,10 @@ const DayNavigation: React.FC = () => {
         icon={view == "week" ? "chevron-triple-left" : "chevron-left" } size={24} /> 
       </TouchableOpacity>
 
-      <Text style={styles.weekText}>{view == 'week' ?  weekString : currentDate.toDateString()}</Text>
-      
+      <Text style={styles.weekText}>
+        {view === 'week' ? weekString : currentDate.toLocaleDateString(undefined, { day: '2-digit', month: '2-digit' })}
+      </Text>
+            
       <TouchableOpacity onPress={handleNext}>
           <IconButton mode='contained-tonal' iconColor={Colors[colorScheme].text} containerColor={Colors[colorScheme].accent} 
           icon={view == "week" ? "chevron-triple-right" : "chevron-right" } size={24} /> 

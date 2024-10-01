@@ -21,6 +21,8 @@ export class Task {
   
     id: string;
 
+    dbid: string;
+
     /**
      * Name of the task.
      */
@@ -51,6 +53,7 @@ export class Task {
      */
     constructor(user: string, title: string, description?: string, date?: Date, completed: boolean = false) {
       this.id = `${user}-${date?.getTime() || 'notes'}-${date?.getMonth()}-${date?.getFullYear()}-${date?.getHours()}-${date?.getMinutes()}-${date?.getSeconds()}`;
+      this.dbid = "";
       this.userId = `${user}`;
       this.title = title;
       this.description = description;
@@ -65,16 +68,21 @@ export class Task {
     }
 
     async saveToFirebase() {
-      console.log('Saving to Firebase');
       try {
-        await addDoc(collection(db, 'tasks'), {
+        const docRef = await addDoc(collection(db, 'tasks'), {
           userId: this.userId,
-          id: this.id,
+          id: this.id,  
           title: this.title,
           description: this.description,
           date: this.date?.toDateString() || "notes",
           completed: this.completed,
         });
+    
+        this.dbid = docRef.id;
+    
+        await updateDoc(docRef, { dbid: this.dbid });
+        console.log('Document successfully saved with dbid:', this.dbid);
+    
       } catch (e) {
         console.error('Error adding document: ', e);
       }
@@ -119,7 +127,7 @@ export class Task {
       console.log('Updating task: ', t.id);
       
       try {
-        await updateDoc(doc(db, 'tasks', "7UiSdmPiBwqPsJqTw92w"), {
+        await updateDoc(doc(db, 'tasks', t.dbid), {
           title: t.title,
           description: t.description,
           date: t.date?.toDateString() || "notes",
