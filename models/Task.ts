@@ -2,6 +2,7 @@ import { doc, updateDoc, query, where, addDoc, collection, getDocs, DocumentData
 import {db, storage} from '../firebaseConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from '@react-native-community/netinfo';
+import { TaskViewModel } from './TaskViewModel';
 
 
 
@@ -111,6 +112,22 @@ export class Task {
         await this.saveLocally();
       } else {
         await this.saveLocally();
+      }
+    }
+
+    static async update(t: TaskViewModel) {
+      console.log('Updating task: ', t.id);
+      
+      try {
+        await updateDoc(doc(db, 'tasks', "7UiSdmPiBwqPsJqTw92w"), {
+          title: t.title,
+          description: t.description,
+          date: t.date?.toDateString() || "notes",
+          completed: t.completed,
+        });
+        
+      } catch (e) {
+        console.error('Error updating document: ', e);
       }
     }
   }

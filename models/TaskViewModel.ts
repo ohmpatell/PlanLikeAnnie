@@ -19,7 +19,8 @@ export class TaskViewModel {
         return new TaskViewModel(task.id ,task.title, task.description, task.date, task.completed);
     }
 
-    toString(): string {
-        return this.title;
+    static fromJSON(json: any): TaskViewModel {
+        return new TaskViewModel(json.id, json.title, json.description, new Date(json.date), json.completed);
     }
+    
 }

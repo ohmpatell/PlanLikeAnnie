@@ -1,27 +1,18 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import TaskComponent from './TaskComponent';
 import { useDayContext } from '@/context/DayContext';
 import { TaskViewModel } from '@/models/TaskViewModel';
 import Day from '@/models/Day';
 import { AuthContext } from '@/context/AuthContext';
 
-const TaskList = ({ date }: { date: any }) => {
+const TaskList = ({ tasksArr }: { tasksArr: any }) => {
   const { currentUser } = useContext(AuthContext);
-  const [tasks, setTasks] = useState<TaskViewModel[]>([]);
+  const [tasks, setTasks] = useState<TaskViewModel[]>([tasksArr]);
+  const { currentDate, view } = useDayContext();
 
-  useEffect(() => {
-    const fetchTasks = async () => {
-      console.log("DATE: ", date);
-      const day = new Day(new Date(date));
-      console.log("DAY: ", day);
-      const tasks = await day.fetchTasks(currentUser.uid);
-      setTasks(tasks);
-    };
-
-    fetchTasks();
-  }, [date, currentUser.uid]);
-
+  console.log('Tasks: ', tasks);
+  console.log('TasksArr: ', tasksArr);
   const handleToggleComplete = (id: string) => {
     setTasks((prevTasks) =>
       prevTasks.map((task) =>
@@ -32,9 +23,24 @@ const TaskList = ({ date }: { date: any }) => {
 
   return (
     <View style={styles.container}>
-      {tasks.map((task) => (
-        <TaskComponent key={task.id} task={task} onToggleComplete={handleToggleComplete} />
-      ))}
+      {Array.isArray(tasksArr) &&
+        tasksArr.map((task: TaskViewModel, index: number) => {
+          if (view === "week" && index === 0) {
+            return (
+              <React.Fragment key={task.id}>
+                <TaskComponent task={task} onToggleComplete={handleToggleComplete} />
+                {tasksArr.length > 1 && 
+                <Text>& more</Text>
+                }
+              </React.Fragment>
+            );
+          } else if (view !== "week") {
+            return (
+              <TaskComponent key={task.id} task={task} onToggleComplete={handleToggleComplete} />
+            );
+          }
+          return null;
+        })}
     </View>
   );
 };

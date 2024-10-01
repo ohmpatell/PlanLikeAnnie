@@ -3,6 +3,7 @@ import { Task } from './Task';
 import { doc, updateDoc, query, where, addDoc, collection, getDocs, DocumentData, Timestamp } from 'firebase/firestore';
 import { TaskViewModel } from './TaskViewModel';
 
+
 class Day {
   date: Date;
   day: string;
@@ -40,10 +41,19 @@ class Day {
   }
   
   async fetchTasks(currentUser: string) {
+    const tasks = await this.fetchFromFirebase(currentUser);
 
+    if (tasks.length === 0) {
+      return [];
+    }
+
+    return tasks;
+
+  }
+
+  async fetchFromFirebase(currentUser: string) {
     const res: TaskViewModel[] = []
     // Get the current date in 'YYYY-MM-DD' format
-    console.log('Fetching tasks for current user: ' + currentUser + '|  and date: ' + this.date.toDateString());
     try {
       const q = query(
         collection(db, 'tasks'),
@@ -60,15 +70,15 @@ class Day {
         if(task instanceof TaskViewModel){
           res.push(task);
         }
-
       });
-      console.log('Tasks fetched: ', res);
       return res;
     } catch (e) {
       console.error('Error fetching documents: ', e);
       throw new Error('Error fetching tasks');
     }
   }
+
+
 
 }
 

@@ -61,6 +61,7 @@ const AppBar: React.FC = () => {
 
   const handleSaveTask = () => {
     const _ = new Task(currentUser.uid, taskName, taskDescription, taskDate);
+    setCurrentDate(taskDate);
     closeNewTaskDialog();
   };
 
@@ -73,7 +74,6 @@ const AppBar: React.FC = () => {
   };
 
   const handleConfirm = async (output: any) => {
-    setCurrentDate(output.date);
     setTaskDate(output.date);
     hideDatePicker();
   };
